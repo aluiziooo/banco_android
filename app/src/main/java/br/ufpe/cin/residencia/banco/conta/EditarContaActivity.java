@@ -54,13 +54,19 @@ public class EditarContaActivity extends AppCompatActivity {
                     if(saldoConta.isEmpty() || cpfCliente.isEmpty() || nomeCliente.isEmpty()){
                         Toast.makeText(this, "Valor para o(s) campos invalidos!! ", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(Double.parseDouble(saldoConta) < 0){
-                            Toast.makeText(this, "Saldo não pode ser negativo", Toast.LENGTH_SHORT).show();
+                        if(isNumerico(saldoConta)) {
+                            if(Double.valueOf(saldoConta) >= 0){
+                                Double saldo = Double.parseDouble(saldoConta);
+                                Conta c = new Conta(numeroConta, saldo, nomeCliente, cpfCliente);
+                                viewModel.atualizar(c);
+                            } else {
+                                Toast.makeText(this, "Saldo não pode ser negativo", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else{
-                            Double saldo = Double.parseDouble(saldoConta);
-                            Conta c = new Conta(numeroConta,saldo, nomeCliente, cpfCliente);
-                            viewModel.atualizar(c);
+                            Toast.makeText(this, "Saldo tem que ser numero", Toast.LENGTH_SHORT).show();
                         }
+
 
                     }
 
@@ -84,5 +90,9 @@ public class EditarContaActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    boolean isNumerico(String saldo) {
+        return saldo.matches("[+-]?\\d*(\\.\\d+)?");
     }
 }

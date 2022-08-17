@@ -32,4 +32,10 @@ public interface ContaDAO {
 
     @Query("SELECT * FROM contas WHERE numero = :numeroC")
     Conta buscarPeloNumero(String numeroC);
+
+    @Query("SELECT * FROM contas WHERE cpfCliente = :cpfCliente")
+    List<Conta> buscarPeloCPF(String cpfCliente);
+
+    @Query("SELECT * FROM contas WHERE nomeCliente = :nomeC")
+    List<Conta> buscarPeloNome(String nomeC);
 }

@@ -39,13 +39,13 @@ public class ContaRepository {
     @WorkerThread
     public List<Conta> buscarPeloNome(String nomeCliente) {
         //TODO implementar busca
-        return null;
+        return dao.buscarPeloNome(nomeCliente);
     }
 
     @WorkerThread
     public List<Conta> buscarPeloCPF(String cpfCliente) {
         //TODO implementar busca
-        return null;
+        return dao.buscarPeloCPF(cpfCliente);
     }
 
     @WorkerThread
