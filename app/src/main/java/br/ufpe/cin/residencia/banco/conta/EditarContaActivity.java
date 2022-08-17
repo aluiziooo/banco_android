@@ -35,7 +35,15 @@ public class EditarContaActivity extends AppCompatActivity {
         Intent i = getIntent();
         String numeroConta = i.getStringExtra(KEY_NUMERO_CONTA);
         //TODO usar o número da conta passado via Intent para recuperar informações da conta
+        viewModel.buscarPeloNumero(numeroConta);
 
+        viewModel.contaAtual.observe(this,
+                conta -> {
+                    campoNome.setText(conta.nomeCliente);
+                    campoCPF.setText(conta.cpfCliente);
+                    campoSaldo.setText(String.valueOf(conta.saldo));
+                }
+        );
         btnAtualizar.setText("Editar");
         btnAtualizar.setOnClickListener(
                 v -> {
@@ -43,18 +51,38 @@ public class EditarContaActivity extends AppCompatActivity {
                     String cpfCliente = campoCPF.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
                     //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
-//                    if(saldoConta.isEmpty()){
-//                        Toast.makeText(this, "Para fazer a operação digite um", Toast.LENGTH_SHORT).show();
-//                    }
-//                    Double saldo = Double.parseDouble(saldoConta);
-//                    Conta c = new Conta(numeroConta,saldo, cpfCliente, saldoConta);
+                    if(saldoConta.isEmpty() || cpfCliente.isEmpty() || nomeCliente.isEmpty()){
+                        Toast.makeText(this, "Valor para o(s) campos invalidos!! ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(Double.parseDouble(saldoConta) < 0){
+                            Toast.makeText(this, "Saldo não pode ser negativo", Toast.LENGTH_SHORT).show();
+                        } else{
+                            Double saldo = Double.parseDouble(saldoConta);
+                            Conta c = new Conta(numeroConta,saldo, nomeCliente, cpfCliente);
+                            viewModel.atualizar(c);
+                        }
+
+                    }
+
                     //TODO: chamar o método que vai atualizar a conta no Banco de Dados
-                   // viewModel.atualizar(c);
+
                 }
         );
 
         btnRemover.setOnClickListener(v -> {
             //TODO implementar remoção da conta
+            String nomeCliente = campoNome.getText().toString();
+            String cpfCliente = campoCPF.getText().toString();
+            String saldoConta = campoSaldo.getText().toString();
+            //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
+            if(saldoConta.isEmpty() || cpfCliente.isEmpty() || nomeCliente.isEmpty()){
+                Toast.makeText(this, "Valor para o(s) campos invalidos!! ", Toast.LENGTH_SHORT).show();
+            } else {
+                Double saldo = Double.parseDouble(saldoConta);
+                Conta c = new Conta(numeroConta,saldo, cpfCliente, saldoConta);
+                viewModel.remover(c);
+            }
+
         });
     }
 }

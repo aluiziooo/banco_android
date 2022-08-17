@@ -27,12 +27,13 @@ public class ContaRepository {
     @WorkerThread
     public void atualizar(Conta c) {
         //TODO implementar atualizar
-        dao.adicionar(c);
+        dao.atualizar(c);
     }
 
     @WorkerThread
     public void remover(Conta c) {
         //TODO implementar remover
+        dao.deletar(c);
     }
 
     @WorkerThread
@@ -50,6 +51,6 @@ public class ContaRepository {
     @WorkerThread
     public Conta buscarPeloNumero(String numeroConta) {
         //TODO implementar busca
-        return null;
+        return dao.buscarPeloNumero(numeroConta);
     }
 }

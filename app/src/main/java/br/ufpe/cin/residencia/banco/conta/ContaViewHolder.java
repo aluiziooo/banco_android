@@ -21,6 +21,7 @@ public class ContaViewHolder  extends RecyclerView.ViewHolder {
     TextView infoConta = null;
     ImageView icone = null;
 
+
     public ContaViewHolder(@NonNull View linha) {
         super(linha);
         this.nomeCliente = linha.findViewById(R.id.nomeCliente);
