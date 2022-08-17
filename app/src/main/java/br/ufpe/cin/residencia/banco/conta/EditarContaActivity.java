@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import br.ufpe.cin.residencia.banco.R;
 
@@ -42,7 +43,13 @@ public class EditarContaActivity extends AppCompatActivity {
                     String cpfCliente = campoCPF.getText().toString();
                     String saldoConta = campoSaldo.getText().toString();
                     //TODO: Incluir validações aqui, antes de criar um objeto Conta. Se todas as validações passarem, aí sim monta um objeto Conta.
+//                    if(saldoConta.isEmpty()){
+//                        Toast.makeText(this, "Para fazer a operação digite um", Toast.LENGTH_SHORT).show();
+//                    }
+//                    Double saldo = Double.parseDouble(saldoConta);
+//                    Conta c = new Conta(numeroConta,saldo, cpfCliente, saldoConta);
                     //TODO: chamar o método que vai atualizar a conta no Banco de Dados
+                   // viewModel.atualizar(c);
                 }
         );
 

@@ -32,6 +32,7 @@ public class ContaViewModel extends AndroidViewModel {
 
     void atualizar(Conta c) {
         //TODO implementar
+        new Thread(() -> repository.atualizar(c)).start();
     }
 
     void remover(Conta c) {

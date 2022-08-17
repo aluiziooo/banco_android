@@ -65,9 +65,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:inputType="numberDecimal"
         android:fontFamily="sans-serif-light"
         android:hint="Digite o saldo"
+        android:inputType="numberSigned|numberDecimal"
         android:minHeight="48dp"
         android:textSize="18sp" />
 

@@ -17,6 +17,8 @@ public interface ContaDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void adicionar(Conta c);
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void atualizar(Conta c);
     //TODO incluir métodos para atualizar conta e remover conta
 
     @Query("SELECT * FROM contas ORDER BY numero ASC")

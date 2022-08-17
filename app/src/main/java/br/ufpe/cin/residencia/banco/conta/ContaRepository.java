@@ -27,6 +27,7 @@ public class ContaRepository {
     @WorkerThread
     public void atualizar(Conta c) {
         //TODO implementar atualizar
+        dao.adicionar(c);
     }
 
     @WorkerThread
