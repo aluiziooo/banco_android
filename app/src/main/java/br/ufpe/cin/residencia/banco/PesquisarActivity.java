@@ -45,18 +45,32 @@ public class PesquisarActivity extends AppCompatActivity {
         btnPesquisar.setOnClickListener(
                 v -> {
                     String oQueFoiDigitado = aPesquisar.getText().toString();
-                   //a busca de acordo com o tipo de busca escolhido pelo usuário
-                    if (oQueFoiDigitado.equals("")){
-                        Toast.makeText(this, "Digite a informação a ser buscada", Toast.LENGTH_SHORT).show();
-                    }
-                    if (Nome.isChecked()){
-                        viewModel.buscarPeloNome(oQueFoiDigitado);
-                    }
-                    if (CPF.isChecked()){
-                        viewModel.buscarPeloCPF(oQueFoiDigitado);
-                    }
-                    if (NumeroConta.isChecked()){
-                        viewModel.buscarPeloNumero(oQueFoiDigitado);
+                    if(oQueFoiDigitado.isEmpty()){
+                        Toast.makeText(this, "Preencha o campo para pesquisa!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //a busca de acordo com o tipo de busca escolhido pelo usuário
+                        if (oQueFoiDigitado.equals("")) {
+                            Toast.makeText(this, "Digite a informação a ser buscada", Toast.LENGTH_SHORT).show();
+                        }
+                        if (Nome.isChecked()) {
+                            viewModel.buscarPeloNome(oQueFoiDigitado);
+                        }
+                        if (CPF.isChecked()) {
+                            if(isCPF(oQueFoiDigitado)){
+                                viewModel.buscarPeloCPF(oQueFoiDigitado);
+                            } else {
+                                Toast.makeText(this, "Digite um CPF VALIDO!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                        if (NumeroConta.isChecked()) {
+                            if (isNumerico(oQueFoiDigitado)){
+                                viewModel.buscarPeloNumero(oQueFoiDigitado);
+                            } else{
+                                Toast.makeText(this, "Digite um numero valido!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
                     }
 
 
@@ -87,5 +101,12 @@ public class PesquisarActivity extends AppCompatActivity {
         );
 
 
+    }
+    boolean isNumerico(String saldo) {return saldo.matches("[+-]?\\d*(\\.\\d+)?");}
+    boolean isCPF(String cpf){
+        if(isNumerico(cpf)){
+            return cpf.length()==11;
+        }
+        return false;
     }
 }

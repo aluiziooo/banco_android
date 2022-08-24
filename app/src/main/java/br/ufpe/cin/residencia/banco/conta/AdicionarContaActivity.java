@@ -53,16 +53,23 @@ public class AdicionarContaActivity extends AppCompatActivity {
                         if (!isNumerico(saldoConta)) {
                             Toast.makeText(this, "Saldo Tem que ser um numero!!!", Toast.LENGTH_SHORT).show();
                         } else {
-
-                            Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
-                            //TODO: chamar o método que vai salvar a conta no Banco de Dados
-                            viewModel.inserir(c);
-                            totalDeDinheiro += c.saldo;
-                            preferences
-                                    .edit()
-                                    .putInt(TOTAL, totalDeDinheiro)
-                                    .apply();
-                            finish();
+                            if(!isCPF(cpfCliente)){
+                                Toast.makeText(this, "CPF tem 11 digitos, preencha corretamente!!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if(!isNumerico(numeroConta)){
+                                    Toast.makeText(this, "Passe um numero para conta!!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
+                                    //TODO: chamar o método que vai salvar a conta no Banco de Dados
+                                    viewModel.inserir(c);
+                                    totalDeDinheiro += c.saldo;
+                                    preferences
+                                            .edit()
+                                            .putInt(TOTAL, totalDeDinheiro)
+                                            .apply();
+                                    finish();
+                                }
+                            }
                         }
 
 
@@ -71,7 +78,6 @@ public class AdicionarContaActivity extends AppCompatActivity {
 
                 });
     }
-    boolean isNumerico(String saldo) {
-        return saldo.matches("[+-]?\\d*(\\.\\d+)?");
-    }
+    boolean isNumerico(String saldo) {return saldo.matches("[+-]?\\d*(\\.\\d+)?");}
+    boolean isCPF(String cpf){return cpf.length()==11;}
 }
