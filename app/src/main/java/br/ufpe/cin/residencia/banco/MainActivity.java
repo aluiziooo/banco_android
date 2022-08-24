@@ -2,8 +2,10 @@ package br.ufpe.cin.residencia.banco;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import br.ufpe.cin.residencia.banco.conta.ContasActivity;
 //Ver anotações TODO no código
 public class MainActivity extends AppCompatActivity {
     BancoViewModel viewModel;
+    public static final String TOTAL = "saldoTotal";
+    TextView totalBanco;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Button debitar = findViewById(R.id.btnDebitar);
         Button creditar = findViewById(R.id.btnCreditar);
         Button pesquisar = findViewById(R.id.btnPesquisar);
-        TextView totalBanco = findViewById(R.id.totalDinheiroBanco);
+
 
         //Remover a linha abaixo se for implementar a parte de Clientes
         clientes.setEnabled(false);
@@ -53,5 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 v -> startActivity(new Intent(this, PesquisarActivity.class))
         );
     }
-    //TODO Neste arquivo ainda falta a atualização automática do valor total de dinheiro armazenado no banco
+    // Atualização automática do valor total de dinheiro armazenado no banco
+    //Aqui é chamado a função SharedPreferences, onde é guardado o valor total de dinheiro do banco
+    @Override
+    protected void onStart(){
+        super.onStart();
+        totalBanco = findViewById(R.id.totalDinheiroBanco); // pego a referencia do widget
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this); // instancio um novo preference
+        totalBanco.setText("R$ " + String.valueOf(preferences.getInt(TOTAL, 0))); // atualizo o valor da widget
+    }
 }

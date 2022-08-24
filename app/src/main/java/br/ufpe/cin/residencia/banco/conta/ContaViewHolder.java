@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,11 +33,8 @@ public class ContaViewHolder  extends RecyclerView.ViewHolder {
     void bindTo(Conta c) {
         this.nomeCliente.setText(c.nomeCliente);
         this.infoConta.setText(c.numero + " | " + "Saldo atual: R$" + NumberFormat.getCurrencyInstance().format(c.saldo));
-        //TODO Falta atualizar a imagem de acordo com o valor do saldo atual
-        if (c.saldo<0.0) {
-            this.icone.setImageResource(R.drawable.delete);
-        } else {
-            this.icone.setImageResource(R.drawable.ok);
+        if (c.saldo>0.0) { // condição para troca de icone
+            this.icone.setImageResource(R.drawable.ok); // Caso o saldo seja negativo o icone é de delete
         }
         this.addListener(c.numero);
     }

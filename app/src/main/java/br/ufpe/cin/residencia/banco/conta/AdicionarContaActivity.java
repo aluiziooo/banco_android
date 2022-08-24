@@ -1,8 +1,12 @@
 package br.ufpe.cin.residencia.banco.conta;
 
+import static br.ufpe.cin.residencia.banco.MainActivity.TOTAL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import br.ufpe.cin.residencia.banco.R;
 public class AdicionarContaActivity extends AppCompatActivity {
 
     ContaViewModel viewModel;
+    private int totalDeDinheiro = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,9 @@ public class AdicionarContaActivity extends AppCompatActivity {
         btnAtualizar.setText("Inserir");
         btnRemover.setVisibility(View.GONE);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        totalDeDinheiro = preferences.getInt(TOTAL, 0);
+
         btnAtualizar.setOnClickListener(
                 v -> {
                     String nomeCliente = campoNome.getText().toString();
@@ -42,13 +50,19 @@ public class AdicionarContaActivity extends AppCompatActivity {
                     if (saldoConta.isEmpty() || cpfCliente.isEmpty() || nomeCliente.isEmpty()) {
                         Toast.makeText(this, "Valor para o(s) campos invalidos!! ", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (Double.parseDouble(saldoConta) < 0) {
-                            Toast.makeText(this, "Saldo não pode ser negativo", Toast.LENGTH_SHORT).show();
+                        if (!isNumerico(saldoConta)) {
+                            Toast.makeText(this, "Saldo Tem que ser um numero!!!", Toast.LENGTH_SHORT).show();
                         } else {
 
                             Conta c = new Conta(numeroConta, Double.valueOf(saldoConta), nomeCliente, cpfCliente);
                             //TODO: chamar o método que vai salvar a conta no Banco de Dados
                             viewModel.inserir(c);
+                            totalDeDinheiro += c.saldo;
+                            preferences
+                                    .edit()
+                                    .putInt(TOTAL, totalDeDinheiro)
+                                    .apply();
+                            finish();
                         }
 
 
@@ -56,5 +70,8 @@ public class AdicionarContaActivity extends AppCompatActivity {
 
 
                 });
+    }
+    boolean isNumerico(String saldo) {
+        return saldo.matches("[+-]?\\d*(\\.\\d+)?");
     }
 }

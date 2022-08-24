@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //Ver anotações TODO no código
 public class TransferirActivity extends AppCompatActivity {
@@ -34,11 +35,23 @@ public class TransferirActivity extends AppCompatActivity {
                 v -> {
                     String numOrigem = numeroContaOrigem.getText().toString();
                     String numDestino = numeroContaDestino.getText().toString();
-                    //TODO lembrar de implementar validação dos números das contas e do valor da operação, antes de efetuar a operação de transferência.
-                    // O método abaixo está sendo chamado, mas precisa ser implementado na classe BancoViewModel para funcionar.
-                    double valor = Double.valueOf(valorOperacao.getText().toString());
-                    viewModel.transferir(numOrigem, numDestino, valor);
-                    finish();
+
+                    double valor;
+                    if (valorOperacao.getText().toString().equals("")){
+                        valor = 0;
+                        Toast.makeText(this, "Digite dados válidos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        valor = Double.valueOf(valorOperacao.getText().toString());
+                    }
+
+                    if (numOrigem.equals("") || valor == 0 || numDestino.equals("")) {
+                        Toast.makeText(this, "Digite dados válidos", Toast.LENGTH_SHORT).show();
+                    } else if(valor > 0){
+                        viewModel.transferir(numOrigem, numDestino, valor);
+                        Toast.makeText(this, "R$" + valor + " transferido", Toast.LENGTH_SHORT).show();   // Se a a variável valor for maior que zero,
+                        finish();                                                                                   //irá chamar o método transferr
+                    }
+
                 }
         );
 
